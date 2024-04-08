@@ -93,7 +93,7 @@ reordered_matrix = reordered_matrix[, c("O", "C", "E", "A", "N")]
 reordered_matrix
 
 #---------------------------------------- ATOMIC CONGRUENCE ---------------------------------------#
-res = load_and_prep(file ='Results loadings overview!.xlsx',
+res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!.xlsx',
               sheet =  'Results_target_item_labeled')
 #check which solutions can be used
 colnames(res)
@@ -128,7 +128,7 @@ colnames(val_atomic_congruence) = c('O_atom', 'C_atom', 'E_atom', 'A_atom', 'N_a
 val_atomic_congruence
 
 #---------------------------------------- ATOMIC CONGRUENCE REV -----------------------------------#
-res = load_and_prep(file ='Results loadings overview!.xlsx',
+res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!.xlsx',
               sheet =  'Results_target_item_rev_labeled')
 #check which solutions can be used
 colnames(res)
@@ -173,7 +173,7 @@ val_atomic_congruence_rev
 #--------------------------------------------------------------------------------------------------#
 
 #---------------------------------------- SENT CONGRUENCE REV -------------------------------------#
-res = load_and_prep(file ='Results loadings overview!.xlsx',
+res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!.xlsx',
               sheet =  'Results_target_sent_labeled')
 #check which solutions can be used
 colnames(res)
@@ -220,15 +220,15 @@ results_val = cbind(val_atomic_congruence, val_atomic_congruence_rev, val_macro_
 results_val = rbind(results_val, colMeans(results_val, na.rm = TRUE))
 results_val = cbind(results_val, rowMeans(results_val, na.rm = TRUE))
 results_val
-## store congruence results
+## store congruence results in the appropriate folder. 
 write.csv(results_val,
-          'Congruence_target_val.csv')
+          './01 Johnson (2014) facet level 300 items/Results_after_ordering/Congruence_target_val.csv')
 
 #---------------------------------------- Promax Rotation ---------------------------------------#
 #---------------------------------------- Promax Rotation ---------------------------------------#
 
 #---------------------------------------- ATOMIC CONGRUENCE ---------------------------------------#
-res = load_and_prep(file ='Results loadings overview!.xlsx',
+res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!.xlsx',
               sheet =  'Results_prom_item_labeled')
 #check which solutions can be used
 colnames(res)
@@ -268,7 +268,7 @@ colnames(atomic_congruence) = c('O_atom', 'C_atom', 'E_atom', 'A_atom', 'N_atom'
 atomic_congruence
 
 #---------------------------------------- ATOMIC CONGRUENCE REV -----------------------------------#
-res = load_and_prep(file ='Results loadings overview!.xlsx',
+res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!.xlsx',
               sheet =  'Results_prom_item_rev_labeled')
 #check which solutions can be used
 colnames(res)
@@ -309,7 +309,7 @@ colnames(atomic_congruence_rev) = c('O_atom_rev', 'C_atom_rev', 'E_atom_rev', 'A
 atomic_congruence_rev
 
 #---------------------------------------- SENT CONGRUENCE -------------------------------------#
-res = load_and_prep(file ='Results loadings overview!.xlsx',
+res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!.xlsx',
               sheet =  'Results_prom_sent_labeled')
 #check which solutions can be used
 colnames(res)
@@ -358,4 +358,4 @@ results_val_prom = cbind(results_val_prom, rowMeans(results_val_prom, na.rm = TR
 results_val_prom
 ## store congruence results
 write.csv(results_val_prom,
-          'Congruence_prom_val.csv')
+          './01 Johnson (2014) facet level 300 items/Results_after_ordering/Congruence_prom_val.csv')
