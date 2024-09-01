@@ -109,9 +109,9 @@ sent_embed = list()
 
 #load the matries
 for (i in 1:length(models)){
-    item_embed[[i]] = symm(as.matrix(read.csv(paste0('./02 HEXACO facet level/D_matrices/matrix_concatenated_item_', models[i], '.csv'))), var_order)
-    item_rev_embed[[i]] = symm(as.matrix(read.csv(paste0('./02 HEXACO facet level/D_matrices/matrix_concatenated_item_rev_', models[i], '.csv'))), var_order)
-    sent_embed[[i]] = symm(as.matrix(read.csv(paste0('./02 HEXACO facet level/D_matrices/matrix_concatenated_', models[i], '.csv'))), var_order)
+    item_embed[[i]] = symm(as.matrix(read.csv(paste0('./02 HEXACO facet level/D_matrices_new/matrix_concatenated_item_', models[i], '.csv'))), var_order)
+    item_rev_embed[[i]] = symm(as.matrix(read.csv(paste0('./02 HEXACO facet level/D_matrices_new/matrix_concatenated_item_rev_', models[i], '.csv'))), var_order)
+    sent_embed[[i]] = symm(as.matrix(read.csv(paste0('./02 HEXACO facet level/D_matrices_new/matrix_concatenated_', models[i], '.csv'))), var_order)
 }
 
 #add average across transformers
@@ -156,17 +156,19 @@ target.mat
 
 ### EFA w/ target rotation for empirical data
 library(esemComp)
-emp_esem_target_efa <- esem_efa(df_emp, 
-                            nfactors = 6,
-                            target = target.mat,
-                            targetAlgorithm = "targetQ", # target rot
-                            fm = 'ml') 
+
+#df_emp = read.csv('./02 HEXACO facet level/D_matrices/empirical_data.csv')
+#emp_esem_target_efa <- esem_efa(df_emp, 
+#                            nfactors = 6,
+#                            target = target.mat,
+#                            targetAlgorithm = "targetQ", # target rot
+#                            fm = 'ml') 
 
 # create empty loading matrix for each type of embedding, and store the empirical target-rotated 
 # loadings in that matrix. Below we will populate this matrices with the pfa-based target-rotated ones
-targ_load_item = targ_load_item_rev = targ_load_sent = emp_esem_target_efa$loadings
+targ_load_item = targ_load_item_rev = targ_load_sent = target.mat
 
-colnames(targ_load_item) = colnames(targ_load_item_rev) = colnames(targ_load_sent) = paste0(colnames(targ_load_item), '_emp')
+colnames(targ_load_item) = colnames(targ_load_item_rev) = colnames(targ_load_sent) = paste0(c('H', 'E', 'X', 'A', 'C', 'O'), '_emp')
 #create list for item embed target rotated loadings
 
 models =  c('distilroberta', 'miniLM', 'mpnet',
