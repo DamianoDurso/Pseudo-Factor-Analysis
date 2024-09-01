@@ -131,9 +131,9 @@ sent_embed = list()
 
 #load the matries
 for (i in 1:length(models)){
-    item_embed[[i]] = symm(as.matrix(read.csv(paste0('./01 Johnson (2014) facet level 300 items/D_matrices/matrix_concatenated_item_', models[i], '.csv'))), var_order)
-    item_rev_embed[[i]] = symm(as.matrix(read.csv(paste0('./01 Johnson (2014) facet level 300 items/D_matrices/matrix_concatenated_item_rev_', models[i], '.csv'))), var_order)
-    sent_embed[[i]] = symm(as.matrix(read.csv(paste0('./01 Johnson (2014) facet level 300 items/D_matrices/matrix_concatenated_', models[i], '.csv'))), var_order)
+    item_embed[[i]] = symm(as.matrix(read.csv(paste0('./01 Johnson (2014) facet level 300 items/D_matrices_new/matrix_concatenated_item_', models[i], '.csv'))), var_order)
+    item_rev_embed[[i]] = symm(as.matrix(read.csv(paste0('./01 Johnson (2014) facet level 300 items/D_matrices_new/matrix_concatenated_item_rev_', models[i], '.csv'))), var_order)
+    sent_embed[[i]] = symm(as.matrix(read.csv(paste0('./01 Johnson (2014) facet level 300 items/D_matrices_new/matrix_concatenated_', models[i], '.csv'))), var_order)
 }
 
 #add average across transformers
@@ -232,6 +232,7 @@ targ_load_sent = cbind(targ_load_sent,emb_esem_target_efa_sent) #all loadings in
 targ_cor_sent = cbind(targ_cor_sent,emb_cor_sent) #all cor in one place
 }
 
+targ_load_item
 #rm(targ_load_item, targ_load_item_rev, targ_load_sent)
 #store files that are not ordered
 write.csv(round(targ_load_item,3), file = './01 Johnson (2014) facet level 300 items/Results_before_ordering/Results_target_item.csv')
@@ -264,6 +265,8 @@ for (i in 1:(length(models)+1)){
    targ_cor_sent_labeled <- cbind(targ_cor_sent_labeled, round(label_factors_enhanced(targ_load_sent[,(x-4):x], group = label, mod = paste0('_',models[i-1]), cor_matrix = targ_cor_sent[,(x-4):x])$labeled_cor_matrix,3))
    }
 }
+
+targ_load_sent_labeled
 
 #Store files cotaining the target-rotated results in the D_matrices folder with labeling
 write.csv(round(targ_load_item_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_target_item_labeled.csv')
