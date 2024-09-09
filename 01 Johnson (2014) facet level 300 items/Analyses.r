@@ -93,7 +93,7 @@ reordered_matrix = reordered_matrix[, c("O", "C", "E", "A", "N")]
 reordered_matrix
 
 #---------------------------------------- ATOMIC CONGRUENCE ---------------------------------------#
-res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!.xlsx',
+res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!-2.xlsx',
               sheet =  'Results_target_item_labeled')
 #check which solutions can be used
 colnames(res)
@@ -114,13 +114,13 @@ t5 = psych::factor.congruence(x = reordered_matrix[1:30,c(1:5)], y = res[1:30,c(
 val_atomic_congruence = rbind(val_atomic_congruence, diag(t5)) 
 
 psych = psych::factor.congruence(x = reordered_matrix[1:30,c(1:5)], y = res[1:30,c(21:25)])
-val_atomic_congruence = rbind(val_atomic_congruence, c(NA,diag(psych)[2], NA, psych[4,3], psych[5,4])) 
+val_atomic_congruence = rbind(val_atomic_congruence, c(NA,diag(psych)[2:3], NA, psych[5,4])) 
 
 use_dan = psych::factor.congruence(x = reordered_matrix[1:30,c(1:5)], y = res[1:30,c(26:30)])
 val_atomic_congruence = rbind(val_atomic_congruence, c(NA,diag(use_dan)[2], NA, use_dan[4,3], use_dan[5,4])) 
 
 avg_trans = psych::factor.congruence(x = reordered_matrix[1:30,c(1:5)], y = res[1:30,c(31:35)])
-val_atomic_congruence = rbind(val_atomic_congruence, diag(avg_trans)) 
+val_atomic_congruence = rbind(val_atomic_congruence, c(NA, diag(avg_trans)[2:4], NA) ) 
 
 #rename rows and cols
 rownames(val_atomic_congruence) = c('distilroberta', 'miniLM', 'mpnet', 't5', 'psych', 'use_dan', 'avg_trans')
@@ -128,7 +128,7 @@ colnames(val_atomic_congruence) = c('O_atom', 'C_atom', 'E_atom', 'A_atom', 'N_a
 val_atomic_congruence
 
 #---------------------------------------- ATOMIC CONGRUENCE REV -----------------------------------#
-res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!.xlsx',
+res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!-2.xlsx',
               sheet =  'Results_target_item_rev_labeled')
 #check which solutions can be used
 colnames(res)
@@ -156,7 +156,7 @@ val_atomic_congruence_rev = rbind(val_atomic_congruence_rev, diag(t5))
 
 psych = psych::factor.congruence(x = reordered_matrix[1:30,c(1:5)], #empirical 
                                                     y = res[1:30,c(21:25)])
-val_atomic_congruence_rev = rbind(val_atomic_congruence_rev, c(NA, diag(psych)[2], NA, diag(psych)[3], psych[5,4]))
+val_atomic_congruence_rev = rbind(val_atomic_congruence_rev, diag(psych))
 
 use_dan = psych::factor.congruence(x = reordered_matrix[1:30,c(1:5)], #empirical 
                                                     y = res[1:30,c(26:30)])
@@ -164,7 +164,7 @@ val_atomic_congruence_rev = rbind(val_atomic_congruence_rev, diag(use_dan))
 
 avg_trans = psych::factor.congruence(x = reordered_matrix[1:30,c(1:5)], #empirical 
                                                     y = res[1:30,c(31:35)])
-val_atomic_congruence_rev = rbind(val_atomic_congruence_rev, c(NA, diag(avg_trans)[2:3], NA, avg_trans[5,4]))
+val_atomic_congruence_rev = rbind(val_atomic_congruence_rev, diag(avg_trans))
 
 #rename rows and cols
 rownames(val_atomic_congruence_rev) = c('distilroberta', 'miniLM', 'mpnet', 't5', 'psych', 'use_dan', 'avg_trans')
@@ -173,7 +173,7 @@ val_atomic_congruence_rev
 #--------------------------------------------------------------------------------------------------#
 
 #---------------------------------------- SENT CONGRUENCE REV -------------------------------------#
-res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!.xlsx',
+res = load_and_prep(file ='./01 Johnson (2014) facet level 300 items/Results loadings overview!-2.xlsx',
               sheet =  'Results_target_sent_labeled')
 #check which solutions can be used
 colnames(res)
@@ -200,7 +200,7 @@ val_macro_congruence = rbind(val_macro_congruence, diag(t5))
 
 psych = psych::factor.congruence(x = reordered_matrix[1:30,1:5], #empirical 
                                                     y = res[1:30,21:25])
-val_macro_congruence = rbind(val_macro_congruence, c(NA, diag(psych)[2], NA, psych[4,3], psych[5,4]))
+val_macro_congruence = rbind(val_macro_congruence, diag(psych))
 
 use_dan = psych::factor.congruence(x = reordered_matrix[1:30,1:5], #empirical 
                                                     y = res[1:30,26:30])
