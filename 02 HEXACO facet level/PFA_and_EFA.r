@@ -91,10 +91,16 @@ label = list(c(var_order[1:4]), c(var_order[5:8]), c(var_order[9:12]), c(var_ord
            c(var_order[21:24]))
 names(label) <- c("H", "E", "X", "A", "C", "O")
 
-#Below we do the following, for the embeddings data:
+#Below we do the following, for both the empirical data
+# and the embeddings data:
 # - Do model selection
 # - Run EFA with target (and promax) and CFA 
 # - Store the loadings and factor correlation results
+
+# read empirical data
+df_emp = read.csv('empirical_data.csv')
+df_emp = df_emp[,-c(1)]
+df_emp = df_emp[,var_order]
 
 # read embeddings data
 models = c('distilroberta', 'miniLM', 'mpnet',
@@ -109,9 +115,9 @@ sent_embed = list()
 
 #load the matries
 for (i in 1:length(models)){
-    item_embed[[i]] = symm(as.matrix(read.csv(paste0('./02 HEXACO facet level/D_matrices_new/matrix_concatenated_item_', models[i], '.csv'))), var_order)
-    item_rev_embed[[i]] = symm(as.matrix(read.csv(paste0('./02 HEXACO facet level/D_matrices_new/matrix_concatenated_item_rev_', models[i], '.csv'))), var_order)
-    sent_embed[[i]] = symm(as.matrix(read.csv(paste0('./02 HEXACO facet level/D_matrices_new/matrix_concatenated_', models[i], '.csv'))), var_order)
+    item_embed[[i]] = symm(as.matrix(read.csv(paste0('matrix_concatenated_item_', models[i], '.csv'))), var_order)
+    item_rev_embed[[i]] = symm(as.matrix(read.csv(paste0('matrix_concatenated_item_rev_', models[i], '.csv'))), var_order)
+    sent_embed[[i]] = symm(as.matrix(read.csv(paste0('matrix_concatenated_', models[i], '.csv'))), var_order)
 }
 
 #add average across transformers
@@ -122,6 +128,10 @@ sent_embed[[i+1]] = apply(simplify2array(sent_embed)[,,c(1:5)], 1:2, mean)
 #------------------------------------------------------------------------------#
 #------------------------------------------------------------------------------#
 # Parallel analysis
+#run parallel analysis on empirical data
+par_emp = fa.parallel(df_emp[,-c(1)], n.iter = 100)
+par_emp$nfact
+
 #create empty lists containing the number of factors extracted
 par_item = NULL
 par_item_rev = NULL
@@ -156,19 +166,17 @@ target.mat
 
 ### EFA w/ target rotation for empirical data
 library(esemComp)
-
-#df_emp = read.csv('./02 HEXACO facet level/D_matrices/empirical_data.csv')
-#emp_esem_target_efa <- esem_efa(df_emp, 
-#                            nfactors = 6,
-#                            target = target.mat,
-#                            targetAlgorithm = "targetQ", # target rot
-#                            fm = 'ml') 
+emp_esem_target_efa <- esem_efa(df_emp, 
+                            nfactors = 6,
+                            target = target.mat,
+                            targetAlgorithm = "targetQ", # target rot
+                            fm = 'ml') 
 
 # create empty loading matrix for each type of embedding, and store the empirical target-rotated 
 # loadings in that matrix. Below we will populate this matrices with the pfa-based target-rotated ones
-targ_load_item = targ_load_item_rev = targ_load_sent = target.mat
+targ_load_item = targ_load_item_rev = targ_load_sent = emp_esem_target_efa$loadings
 
-colnames(targ_load_item) = colnames(targ_load_item_rev) = colnames(targ_load_sent) = paste0(c('H', 'E', 'X', 'A', 'C', 'O'), '_emp')
+colnames(targ_load_item) = colnames(targ_load_item_rev) = colnames(targ_load_sent) = paste0(colnames(targ_load_item), '_emp')
 #create list for item embed target rotated loadings
 
 models =  c('distilroberta', 'miniLM', 'mpnet',
@@ -203,9 +211,9 @@ targ_load_sent = cbind(targ_load_sent,emb_esem_target_efa_sent)
 
 #rm(targ_load_item, targ_load_item_rev, targ_load_sent)
 #store files that are not ordered
-write.csv(round(targ_load_item,3), file = './02 HEXACO facet level/Results_before_ordering/Results_target_item.csv')
-write.csv(round(targ_load_item_rev,3), file = './02 HEXACO facet level/Results_before_ordering/Results_target_item_rev.csv')
-write.csv(round(targ_load_sent,3), file = './02 HEXACO facet level/Results_before_ordering/Results_target_sent.csv')
+write.csv(round(targ_load_item,3), file = 'Results_target_item.csv')
+write.csv(round(targ_load_item_rev,3), file = 'Results_target_item_rev.csv')
+write.csv(round(targ_load_sent,3), file = 'Results_target_sent.csv')
 
 #Now label factor using the absolute maximum average loading approach
 targ_load_item_labeled = NA
@@ -225,9 +233,9 @@ for (i in 1:(length(models)+1)){
    }
 }
 
-write.csv(round(targ_load_item_labeled,3), file = './02 HEXACO facet level/Results_after_ordering/Results_target_item_labeled.csv')
-write.csv(round(targ_load_item_rev_labeled,3), file = './02 HEXACO facet level/Results_after_ordering/Results_target_item_rev_labeled.csv')
-write.csv(round(targ_load_sent_labeled,3), file = './02 HEXACO facet level/Results_after_ordering/Results_target_sent_labeled.csv')
+write.csv(round(targ_load_item_labeled,3), file = 'Results_target_item_labeled.csv')
+write.csv(round(targ_load_item_rev_labeled,3), file = 'Results_target_item_rev_labeled.csv')
+write.csv(round(targ_load_sent_labeled,3), file = 'Results_target_sent_labeled.csv')
 #------------------------------------------------------------------------------#
 #------------------------------------------------------------------------------#
 ### EFA with promax rotation
@@ -253,9 +261,9 @@ prom_load_sent = cbind(prom_load_sent,emb_prom_sent)
 }
 
 #store unlabeled files
-write.csv(round(prom_load_item,3), file = './02 HEXACO facet level/Results_before_ordering/Results_prom_item.csv')
-write.csv(round(prom_load_item_rev,3), file = './02 HEXACO facet level/Results_before_ordering/Results_prom_item_rev.csv')
-write.csv(round(prom_load_sent,3), file = './02 HEXACO facet level/Results_before_ordering/Results_prom_sent.csv')
+write.csv(round(prom_load_item,3), file = 'Results_prom_item.csv')
+write.csv(round(prom_load_item_rev,3), file = 'Results_prom_item_rev.csv')
+write.csv(round(prom_load_sent,3), file = 'Results_prom_sent.csv')
 
 #Now label factor using the absolute maximum average loading approach
 prom_load_item_labeled = NA
@@ -276,8 +284,48 @@ for (i in 1:(length(models)+1)){
 }
 
 #store files
-write.csv(round(prom_load_item_labeled,3), file = './02 HEXACO facet level/Results_after_ordering/Results_prom_item_labeled.csv')
-write.csv(round(prom_load_item_rev_labeled,3), file = './02 HEXACO facet level/Results_after_ordering/Results_prom_item_rev_labeled.csv')
-write.csv(round(prom_load_sent_labeled,3), file = './02 HEXACO facet level/Results_after_ordering/Results_prom_sent_labeled.csv')
+write.csv(round(prom_load_item_labeled,3), file = 'Results_prom_item_labeled.csv')
+write.csv(round(prom_load_item_rev_labeled,3), file = 'Results_prom_item_rev_labeled.csv')
+write.csv(round(prom_load_sent_labeled,3), file = 'Results_prom_sent_labeled.csv')
 #------------------------------------------------------------------------------#
 #------------------------------------------------------------------------------#
+
+### CFA
+library(lavaan)
+library(semTools)
+model = ' H =~ Sinc + Fair + Gree + Mode
+          E =~ Fear + Anxi + Depe + Sent
+          X =~ Expr + SocB + Soci + Live
+          A =~ Forg + Gent + Flex + Pati
+          C =~ Orga + Dili + Perf + Prud
+          O =~ AesA + Inqu + Crea + Unco
+'
+
+fit = lavaan::cfa(model = model, 
+                        data = df_emp,
+                        std.lv = T)
+
+cfa_load_item = cfa_load_item_rev = cfa_load_sent = lavInspect(fit, what = 'std')$lambda
+colnames(cfa_load_item) = colnames(cfa_load_item_rev) = colnames(cfa_load_sent) = paste0(colnames(cfa_load_item), '_emp')
+
+for (i in 1:length(item_embed)){
+emb_fit_item <- cfa(model = model, sample.cov = item_embed[[i]], sample.nobs = 3000, std.lv = T)
+load_item = lavInspect(emb_fit_item, what = 'std')$lambda
+colnames(load_item) = paste0(colnames(load_item), '_item_', models[i])
+cfa_load_item = cbind(cfa_load_item, load_item)
+
+emb_fit_item_rev <- cfa(model = model, sample.cov = item_rev_embed[[i]], sample.nobs = 3000, std.lv = T)
+load_item_rev = lavInspect(emb_fit_item_rev, what = 'std')$lambda
+colnames(load_item_rev) = paste0(colnames(load_item_rev), '_item_', models[i])
+cfa_load_item_rev = cbind(cfa_load_item_rev, load_item_rev)
+
+emb_fit_sent <- cfa(model = model, sample.cov = sent_embed[[i]], sample.nobs = 3000, std.lv = T)
+load_sent = lavInspect(emb_fit_sent, what = 'std')$lambda
+colnames(load_sent) = paste0(colnames(load_sent), '_item_', models[i])
+cfa_load_sent = cbind(cfa_load_sent, load_sent)
+}
+#store files
+write.csv(round(cfa_load_item,3), file = 'Results_cfa_item.csv')
+write.csv(round(cfa_load_item_rev,3), file = 'Results_cfa_item_rev.csv')
+write.csv(round(cfa_load_sent,3), file = 'Results_cfa_sent.csv')
+

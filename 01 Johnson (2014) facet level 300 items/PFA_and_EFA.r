@@ -131,9 +131,9 @@ sent_embed = list()
 
 #load the matries
 for (i in 1:length(models)){
-    item_embed[[i]] = symm(as.matrix(read.csv(paste0('./01 Johnson (2014) facet level 300 items/D_matrices_new/matrix_concatenated_item_', models[i], '.csv'))), var_order)
-    item_rev_embed[[i]] = symm(as.matrix(read.csv(paste0('./01 Johnson (2014) facet level 300 items/D_matrices_new/matrix_concatenated_item_rev_', models[i], '.csv'))), var_order)
-    sent_embed[[i]] = symm(as.matrix(read.csv(paste0('./01 Johnson (2014) facet level 300 items/D_matrices_new/matrix_concatenated_', models[i], '.csv'))), var_order)
+    item_embed[[i]] = symm(as.matrix(read.csv(paste0('matrix_concatenated_item_', models[i], '.csv'))), var_order)
+    item_rev_embed[[i]] = symm(as.matrix(read.csv(paste0('matrix_concatenated_item_rev_', models[i], '.csv'))), var_order)
+    sent_embed[[i]] = symm(as.matrix(read.csv(paste0('matrix_concatenated_', models[i], '.csv'))), var_order)
 }
 
 #add average across transformers
@@ -232,12 +232,11 @@ targ_load_sent = cbind(targ_load_sent,emb_esem_target_efa_sent) #all loadings in
 targ_cor_sent = cbind(targ_cor_sent,emb_cor_sent) #all cor in one place
 }
 
-targ_load_item
 #rm(targ_load_item, targ_load_item_rev, targ_load_sent)
 #store files that are not ordered
-write.csv(round(targ_load_item,3), file = './01 Johnson (2014) facet level 300 items/Results_before_ordering/Results_target_item.csv')
-write.csv(round(targ_load_item_rev,3), file = './01 Johnson (2014) facet level 300 items/Results_before_ordering/Results_target_item_rev.csv')
-write.csv(round(targ_load_sent,3), file = './01 Johnson (2014) facet level 300 items/Results_before_ordering/Results_target_sent.csv')
+write.csv(round(targ_load_item,3), file = 'Results_target_item.csv')
+write.csv(round(targ_load_item_rev,3), file = 'Results_target_item_rev.csv')
+write.csv(round(targ_load_sent,3), file = 'Results_target_sent.csv')
 
 #Now label factor using the absolute maximum average loading approach
 targ_load_item_labeled = NA
@@ -266,17 +265,13 @@ for (i in 1:(length(models)+1)){
    }
 }
 
-targ_load_sent_labeled
+write.csv(round(targ_load_item_labeled,3), file = 'Results_target_item_labeled.csv')
+write.csv(round(targ_load_item_rev_labeled,3), file = 'Results_target_item_rev_labeled.csv')
+write.csv(round(targ_load_sent_labeled,3), file = 'Results_target_sent_labeled.csv')
 
-#Store files cotaining the target-rotated results in the D_matrices folder with labeling
-write.csv(round(targ_load_item_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_target_item_labeled.csv')
-write.csv(round(targ_load_item_rev_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_target_item_rev_labeled.csv')
-write.csv(round(targ_load_sent_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_target_sent_labeled.csv')
-
-#Store files cotaining the target-rotated results in the D_matrices folder with labeling
-write.csv(round(targ_cor_item_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_target_item_labeled_cor.csv')
-write.csv(round(targ_cor_item_rev_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_target_item_rev_labeled_cor.csv')
-write.csv(round(targ_cor_sent_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_target_sent_labeled_cor.csv')
+write.csv(round(targ_cor_item_labeled,3), file = 'Results_target_item_labeled_cor.csv')
+write.csv(round(targ_cor_item_rev_labeled,3), file = 'Results_target_item_rev_labeled_cor.csv')
+write.csv(round(targ_cor_sent_labeled,3), file = 'Results_target_sent_labeled_cor.csv')
 
 #------------------------------------------------------------------------------#
 #------------------------------------------------------------------------------#
@@ -320,9 +315,9 @@ prom_cor_sent = cbind(prom_cor_sent, emb_prom_sent_cor) #all cor in one place
 }
 
 #store unlabeled files
-write.csv(round(prom_load_item,3), file = './01 Johnson (2014) facet level 300 items/Results_before_ordering/Results_prom_item.csv')
-write.csv(round(prom_load_item_rev,3), file = './01 Johnson (2014) facet level 300 items/Results_before_ordering/Results_prom_item_rev.csv')
-write.csv(round(prom_load_sent,3), file = './01 Johnson (2014) facet level 300 items/Results_before_ordering/Results_prom_sent.csv')
+write.csv(round(prom_load_item,3), file = 'Results_prom_item.csv')
+write.csv(round(prom_load_item_rev,3), file = 'Results_prom_item_rev.csv')
+write.csv(round(prom_load_sent,3), file = 'Results_prom_sent.csv')
 
 #Now label factor using the absolute maximum average loading approach
 prom_load_item_labeled = NA
@@ -348,13 +343,54 @@ for (i in 1:(length(models)+1)){
 }
 
 #store files
-write.csv(round(prom_load_item_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_prom_item_labeled.csv')
-write.csv(round(prom_load_item_rev_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_prom_item_rev_labeled.csv')
-write.csv(round(prom_load_sent_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_prom_sent_labeled.csv')
+write.csv(round(prom_load_item_labeled,3), file = 'Results_prom_item_labeled.csv')
+write.csv(round(prom_load_item_rev_labeled,3), file = 'Results_prom_item_rev_labeled.csv')
+write.csv(round(prom_load_sent_labeled,3), file = 'Results_prom_sent_labeled.csv')
 
-write.csv(round(prom_cor_item_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_prom_item_labeled_cor.csv')
-write.csv(round(prom_cor_item_rev_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_prom_item_rev_labeled_cor.csv')
-write.csv(round(prom_cor_sent_labeled,3), file = './01 Johnson (2014) facet level 300 items/Results_after_ordering/Results_prom_sent_labeled_cor.csv')
+write.csv(round(prom_cor_item_labeled,3), file = 'Results_prom_item_labeled_cor.csv')
+write.csv(round(prom_cor_item_rev_labeled,3), file = 'Results_prom_item_rev_labeled_cor.csv')
+write.csv(round(prom_cor_sent_labeled,3), file = 'Results_prom_sent_labeled_cor.csv')
 
 #------------------------------------------------------------------------------#
 #------------------------------------------------------------------------------#
+#DO NOT RUN (not yet adjusted)
+
+### CFA
+library(lavaan)
+library(semTools)
+model = ' H =~ Sinc + Fair + Gree + Mode
+          E =~ Fear + Anxi + Depe + Sent
+          X =~ Expr + SocB + Soci + Live
+          A =~ Forg + Gent + Flex + Pati
+          C =~ Orga + Dili + Perf + Prud
+          O =~ AesA + Inqu + Crea + Unco
+'
+
+fit = lavaan::cfa(model = model, 
+                        data = df_emp,
+                        std.lv = T)
+
+cfa_load_item = cfa_load_item_rev = cfa_load_sent = lavInspect(fit, what = 'std')$lambda
+colnames(cfa_load_item) = colnames(cfa_load_item_rev) = colnames(cfa_load_sent) = paste0(colnames(cfa_load_item), '_emp')
+
+for (i in 1:length(item_embed)){
+emb_fit_item <- cfa(model = model, sample.cov = item_embed[[i]], sample.nobs = 3000, std.lv = T)
+load_item = lavInspect(emb_fit_item, what = 'std')$lambda
+colnames(load_item) = paste0(colnames(load_item), '_item_', models[i])
+cfa_load_item = cbind(cfa_load_item, load_item)
+
+emb_fit_item_rev <- cfa(model = model, sample.cov = item_rev_embed[[i]], sample.nobs = 3000, std.lv = T)
+load_item_rev = lavInspect(emb_fit_item_rev, what = 'std')$lambda
+colnames(load_item_rev) = paste0(colnames(load_item_rev), '_item_', models[i])
+cfa_load_item_rev = cbind(cfa_load_item_rev, load_item_rev)
+
+emb_fit_sent <- cfa(model = model, sample.cov = sent_embed[[i]], sample.nobs = 3000, std.lv = T)
+load_sent = lavInspect(emb_fit_sent, what = 'std')$lambda
+colnames(load_sent) = paste0(colnames(load_sent), '_item_', models[i])
+cfa_load_sent = cbind(cfa_load_sent, load_sent)
+}
+#store files
+write.csv(round(cfa_load_item,3), file = 'Results_cfa_item.csv')
+write.csv(round(cfa_load_item_rev,3), file = 'Results_cfa_item_rev.csv')
+write.csv(round(cfa_load_sent,3), file = 'Results_cfa_sent.csv')
+
