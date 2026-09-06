@@ -265,7 +265,7 @@ reordered_matrix = reordered_matrix[, c('H','E', 'X', 'A', 'C', 'O')]
 reordered_matrix
 
 #---------------------------------------- ATOMIC CONGRUENCE ---------------------------------------#
-res = load_and_prep(file ='./02 HEXACO facet level/Results loadings overview!-3.xlsx',
+res = load_and_prep(file ='./02 HEXACO facet level/Results loadings overview!.xlsx',
               sheet =  'Results_target_item_labeled')
 #check which solutions can be used
 colnames(res)
@@ -273,31 +273,31 @@ colnames(res)
 #create empty matrix
 val_atomic_congruence = matrix(NA, 1, 6)
 
-val_atomic_congruence[1, 1:6] = diag(psych::factor.congruence(x = reordered_matrix[1:23,c(1:6)], #empirical 
-                                                     y = res[1:23,c(1:6)])) #distilroberta
-val_atomic_congruence = rbind(val_atomic_congruence, diag(psych::factor.congruence(x = reordered_matrix[1:23,c(1:6)],
-                                                     y = res[1:23,c(7:12)]))) #minilm
-val_atomic_congruence = rbind(val_atomic_congruence, diag(psych::factor.congruence(x = reordered_matrix[1:23,c(1:6)],
-                                                     y = res[1:23,c(13:18)]))) #mpnet
+val_atomic_congruence[1, 1:6] = diag(psych::factor.congruence(x = reordered_matrix[1:24,c(1:6)], #empirical 
+                                                     y = res[1:24,c(1:6)])) #distilroberta
+val_atomic_congruence = rbind(val_atomic_congruence, diag(psych::factor.congruence(x = reordered_matrix[1:24,c(1:6)],
+                                                     y = res[1:24,c(7:12)]))) #minilm
+val_atomic_congruence = rbind(val_atomic_congruence, diag(psych::factor.congruence(x = reordered_matrix[1:24,c(1:6)],
+                                                     y = res[1:24,c(13:18)]))) #mpnet
 #mpnet we need to do separately since factors E, X collapsed. 
-t5 = psych::factor.congruence(x = reordered_matrix[1:23,c(1:6)],
-                                                     y = res[1:23,c(19:24)])
+t5 = psych::factor.congruence(x = reordered_matrix[1:24,c(1:6)],
+                                                     y = res[1:24,c(19:24)])
 val_atomic_congruence = rbind(val_atomic_congruence,c(diag(t5)[1], NA, NA, t5[4,3], t5[5,4], t5[6,5]))
 
-psych = psych::factor.congruence(x = reordered_matrix[1:23,c(1:6)], y = res[1:23,c(25:30)])
+psych = psych::factor.congruence(x = reordered_matrix[1:24,c(1:6)], y = res[1:24,c(25:30)])
 val_atomic_congruence = rbind(val_atomic_congruence, diag(psych)) 
 
-val_atomic_congruence = rbind(val_atomic_congruence, diag(psych::factor.congruence(x = reordered_matrix[1:23,c(1:6)],
-                                                     y = res[1:23,c(31:36)]))) #use_dan
-val_atomic_congruence = rbind(val_atomic_congruence, diag(psych::factor.congruence(x = reordered_matrix[1:23,c(1:6)],
-                                                     y = res[1:23,c(37:42)]))) #avg_trans
+val_atomic_congruence = rbind(val_atomic_congruence, diag(psych::factor.congruence(x = reordered_matrix[1:24,c(1:6)],
+                                                     y = res[1:24,c(31:36)]))) #use_dan
+val_atomic_congruence = rbind(val_atomic_congruence, diag(psych::factor.congruence(x = reordered_matrix[1:24,c(1:6)],
+                                                     y = res[1:24,c(37:42)]))) #avg_trans
 #rename rows and cols
 rownames(val_atomic_congruence) = c('distilroberta', 'miniLM', 'mpnet', 't5', 'psych', 'use_dan', 'avg_trans')
 colnames(val_atomic_congruence) = c('H_atom', 'E_atom', 'X_atom', 'A_atom', 'C_atom', 'O_atom')
 val_atomic_congruence
 
 #---------------------------------------- ATOMIC CONGRUENCE REV -----------------------------------#
-res = load_and_prep(file ='./02 HEXACO facet level/Results loadings overview!-3.xlsx',
+res = load_and_prep(file ='./02 HEXACO facet level/Results loadings overview!.xlsx',
               sheet =  'Results_target_item_rev_labeled')
 #check which solutions can be used
 colnames(res)
@@ -306,34 +306,34 @@ colnames(res)
 val_atomic_congruence_rev = matrix(NA, 1, 6)
 
 #distilroberta we need to do separately because factor H,E collapsed
-distilRob = psych::factor.congruence(x = reordered_matrix[1:23,c(1:6)], #empirical 
-                                                    y = res[1:23,c(1:6)]) 
+distilRob = psych::factor.congruence(x = reordered_matrix[1:24,c(1:6)], #empirical 
+                                                    y = res[1:24,c(1:6)]) 
 val_atomic_congruence_rev[1, 1:6] = c(NA, NA, distilRob[3,2], distilRob[4,3], distilRob[5,4], distilRob[6,5])
 
 #miniLM we need to do separately because factor H,E collapsed
-miniLM = psych::factor.congruence(x = reordered_matrix[1:23,1:6], #empirical 
-                                                    y = res[1:23,7:12])  
+miniLM = psych::factor.congruence(x = reordered_matrix[1:24,1:6], #empirical 
+                                                    y = res[1:24,7:12])  
 val_atomic_congruence_rev = rbind(val_atomic_congruence_rev, c(NA, NA, miniLM[3,2], miniLM[4,3], miniLM[5,4], miniLM[6,5]))
 
 #miniLM we need to do separately because factor H,E collapsed
-mpnet = psych::factor.congruence(x = reordered_matrix[1:23,1:6], #empirical 
-                                                    y = res[1:23,13:18]) 
+mpnet = psych::factor.congruence(x = reordered_matrix[1:24,1:6], #empirical 
+                                                    y = res[1:24,13:18]) 
 val_atomic_congruence_rev = rbind(val_atomic_congruence_rev,c(NA, diag(mpnet)[2:5], NA))
 
-t5 = psych::factor.congruence(x = reordered_matrix[1:23,1:6], #empirical 
-                                                    y = res[1:23,19:24])
+t5 = psych::factor.congruence(x = reordered_matrix[1:24,1:6], #empirical 
+                                                    y = res[1:24,19:24])
 val_atomic_congruence_rev = rbind(val_atomic_congruence_rev,c(NA, NA, t5[3,2], t5[4,3], t5[5,4], t5[6,5]))
 
-psych = psych::factor.congruence(x = reordered_matrix[1:23,1:6], #empirical 
-                                                    y = res[1:23,25:30])
+psych = psych::factor.congruence(x = reordered_matrix[1:24,1:6], #empirical 
+                                                    y = res[1:24,25:30])
 val_atomic_congruence_rev = rbind(val_atomic_congruence_rev, c(NA, diag(psych)[2:3], NA, psych[5,4], psych[6,5]))
 
-use_dan = psych::factor.congruence(x = reordered_matrix[1:23,1:6], #empirical 
-                                                    y = res[1:23,31:36]) 
+use_dan = psych::factor.congruence(x = reordered_matrix[1:24,1:6], #empirical 
+                                                    y = res[1:24,31:36]) 
 val_atomic_congruence_rev = rbind(val_atomic_congruence_rev,c(NA, NA, use_dan[3,2], use_dan[4,3], use_dan[5,4], use_dan[6,5]))
 
-avg_trans = psych::factor.congruence(x = reordered_matrix[1:23,1:6], #empirical 
-                                                    y = res[1:23,37:42])
+avg_trans = psych::factor.congruence(x = reordered_matrix[1:24,1:6], #empirical 
+                                                    y = res[1:24,37:42])
 val_atomic_congruence_rev = rbind(val_atomic_congruence_rev,c(NA, diag(avg_trans)[2], NA, avg_trans[4,3], avg_trans[5,4], avg_trans[6,5]))
 
 #rename rows and cols
@@ -343,7 +343,7 @@ val_atomic_congruence_rev
 #--------------------------------------------------------------------------------------------------#
 
 #---------------------------------------- SENT CONGRUENCE REV -------------------------------------#
-res = load_and_prep(file ='./02 HEXACO facet level/Results loadings overview!-3.xlsx',
+res = load_and_prep(file ='./02 HEXACO facet level/Results loadings overview!.xlsx',
               sheet =  'Results_target_sent_labeled')
 #check which solutions can be used
 colnames(res)
@@ -352,33 +352,33 @@ colnames(res)
 val_macro_congruence = matrix(NA, 1, 6)
 
 #distilroberta we need to do separately because factor E,A collapsed
-distilRob = psych::factor.congruence(x = reordered_matrix[1:23,1:6], #empirical 
-                                                    y = res[1:23,1:6])
+distilRob = psych::factor.congruence(x = reordered_matrix[1:24,1:6], #empirical 
+                                                    y = res[1:24,1:6])
 val_macro_congruence[1, 1:6] = c(diag(distilRob)[1], NA, diag(distilRob)[3], NA, distilRob[5,4], distilRob[6,5])
 
-miniLM = psych::factor.congruence(x = reordered_matrix[1:23,1:6],
-                                                     y = res[1:23,7:12]) #minilm
+miniLM = psych::factor.congruence(x = reordered_matrix[1:24,1:6],
+                                                     y = res[1:24,7:12]) #minilm
 val_macro_congruence = rbind(val_macro_congruence, diag(miniLM)) 
 
-mpnet = psych::factor.congruence(x = reordered_matrix[1:23,1:6],
-                                                     y = res[1:23,13:18]) #mpnet
+mpnet = psych::factor.congruence(x = reordered_matrix[1:24,1:6],
+                                                     y = res[1:24,13:18]) #mpnet
 val_macro_congruence = rbind(val_macro_congruence, diag(mpnet)) 
 
-t5 = psych::factor.congruence(x = reordered_matrix[1:23,1:6],
-                                                     y = res[1:23,19:24]) #mpnet
+t5 = psych::factor.congruence(x = reordered_matrix[1:24,1:6],
+                                                     y = res[1:24,19:24]) #mpnet
 val_macro_congruence = rbind(val_macro_congruence, c(diag(t5)[1], NA, NA, t5[4,3], t5[5,4], t5[6,5])) 
 
 
-psych = psych::factor.congruence(x = reordered_matrix[1:23,1:6],
-                                                     y = res[1:23,25:30]) #psych
+psych = psych::factor.congruence(x = reordered_matrix[1:24,1:6],
+                                                     y = res[1:24,25:30]) #psych
 val_macro_congruence = rbind(val_macro_congruence, diag(psych)) 
 
-use_dan = psych::factor.congruence(x = reordered_matrix[1:23,1:6],
-                                                     y = res[1:23,31:36]) #use_dan
+use_dan = psych::factor.congruence(x = reordered_matrix[1:24,1:6],
+                                                     y = res[1:24,31:36]) #use_dan
 val_macro_congruence = rbind(val_macro_congruence, c(diag(use_dan)[1:2], NA, diag(use_dan)[4:5], NA)) 
 
-avg_trans = psych::factor.congruence(x = reordered_matrix[1:23,1:6],
-                                                     y = res[1:23,37:42]) #avg_transformer
+avg_trans = psych::factor.congruence(x = reordered_matrix[1:24,1:6],
+                                                     y = res[1:24,37:42]) #avg_transformer
 val_macro_congruence = rbind(val_macro_congruence, diag(avg_trans)) 
 #rename rows and cols
 rownames(val_macro_congruence) = c('distilroberta', 'miniLM', 'mpnet', 't5', 'psych', 'use_dan', 'avg_trans')
@@ -389,7 +389,7 @@ val_macro_congruence
 results_val = cbind(val_atomic_congruence, val_atomic_congruence_rev, val_macro_congruence)
 results_val = rbind(results_val, colMeans(results_val, na.rm = TRUE))
 results_val = cbind(results_val, rowMeans(results_val, na.rm = TRUE))
-results_val
+
 ## store congruence results
 write.csv(results_val,
           './02 HEXACO facet level/Results_after_ordering/Congruence_target_val.csv')
